@@ -70,6 +70,7 @@ export default function Cart({ isVisible, onClose }) {
       if (confirmed) {
         hapticFeedback('impact_heavy');
         clearCart();
+        console.log('[Cart] Cart cleared');
       }
     });
   };

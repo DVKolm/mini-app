@@ -16,7 +16,7 @@ function App() {
   const [isCartVisible, setIsCartVisible] = useState(false);
 
   const { user, showMainButton, hideMainButton, hapticFeedback, themeParams } = useTelegram();
-  const { cartItemsCount, cartTotal } = useCart();
+  const { cartItemsCount, cartTotal, isLoading: isCartLoading } = useCart();
 
   const loadProducts = async () => {
     try {
@@ -49,7 +49,12 @@ function App() {
   }, [filterProducts]);
 
   useEffect(() => {
-    console.log('[App] Cart state changed:', { cartItemsCount, cartTotal, isCartVisible });
+    console.log('[App] Cart state changed:', { cartItemsCount, cartTotal, isCartVisible, isCartLoading });
+    
+    // Не обновляем кнопки пока корзина загружается
+    if (isCartLoading) {
+      return;
+    }
     
     // Скрываем кнопку корзины если корзина открыта или пуста
     if (isCartVisible || cartItemsCount === 0) {
@@ -69,7 +74,7 @@ function App() {
     return () => {
       hideMainButton();
     };
-  }, [cartItemsCount, cartTotal, isCartVisible, showMainButton, hideMainButton, hapticFeedback]);
+  }, [cartItemsCount, cartTotal, isCartVisible, isCartLoading, showMainButton, hideMainButton, hapticFeedback]);
 
   const handleCategoryChange = (category) => {
     hapticFeedback('light');
@@ -120,7 +125,7 @@ function App() {
             🥛 Фермерский магазин
             {user && <span className="user-greeting">Привет, {user.first_name}!</span>}
           </h1>
-          {cartItemsCount > 0 && (
+          {!isCartLoading && cartItemsCount > 0 && (
             <button 
               className="cart-button"
               onClick={() => setIsCartVisible(true)}
@@ -170,8 +175,8 @@ function App() {
       />
 
       <footer className="app-footer">
-        <p>Свежие продукты с фермы • Доставка по городу</p>
-        <p className="footer-note">Сделано с ❤️ для Telegram</p>
+        <p>Свежие продукты с фермы</p>
+        <p className="footer-note">Made by cDeki</p>
       </footer>
     </div>
   );

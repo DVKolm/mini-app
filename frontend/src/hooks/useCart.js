@@ -23,6 +23,18 @@ export function useCart() {
     loadCartFromStorage();
   }, []);
 
+  // Синхронизируем localStorage при каждом изменении cart
+  useEffect(() => {
+    if (!isLoading) {
+      try {
+        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+        console.log('[useCart] Auto-sync to localStorage:', cart);
+      } catch (error) {
+        console.error('Error auto-syncing cart to storage:', error);
+      }
+    }
+  }, [cart, isLoading]);
+
   const addToCart = (product, quantity = 1) => {
     setCart(currentCart => {
       const existingItem = currentCart.find(item => item.id === product.id);
@@ -34,15 +46,10 @@ export function useCart() {
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
+        console.log('[addToCart] Updated existing item:', newCart);
       } else {
         newCart = [...currentCart, { ...product, quantity }];
-      }
-      
-      // Принудительно сохраняем в localStorage
-      try {
-        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(newCart));
-      } catch (error) {
-        console.error('Error saving cart to storage:', error);
+        console.log('[addToCart] Added new item:', newCart);
       }
       
       return newCart;
@@ -52,14 +59,6 @@ export function useCart() {
   const removeFromCart = (productId) => {
     setCart(currentCart => {
       const newCart = currentCart.filter(item => item.id !== productId);
-      
-      // Принудительно сохраняем в localStorage
-      try {
-        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(newCart));
-      } catch (error) {
-        console.error('Error saving cart to storage:', error);
-      }
-      
       return newCart;
     });
   };
@@ -77,25 +76,12 @@ export function useCart() {
           : item
       );
       
-      // Принудительно сохраняем в localStorage
-      try {
-        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(newCart));
-      } catch (error) {
-        console.error('Error saving cart to storage:', error);
-      }
-      
       return newCart;
     });
   };
 
   const clearCart = () => {
     setCart([]);
-    // Принудительно очищаем localStorage
-    try {
-      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify([]));
-    } catch (error) {
-      console.error('Error clearing cart storage:', error);
-    }
   };
 
   // Мемоизированные значения для реактивности

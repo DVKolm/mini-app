@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCart } from '../hooks/useCart';
 import { useTelegram } from '../hooks/useTelegram';
 import './ProductCard.css';
@@ -6,13 +6,22 @@ import './ProductCard.css';
 export default function ProductCard({ product }) {
   const { addToCart, getItemQuantity, updateQuantity } = useCart();
   const { hapticFeedback } = useTelegram();
+  const [justAdded, setJustAdded] = useState(false);
   
   const quantity = getItemQuantity(product.id);
 
   const handleAddToCart = () => {
     hapticFeedback('light');
     addToCart(product, 1);
+    setJustAdded(true);
   };
+
+  useEffect(() => {
+    if (justAdded) {
+      const timer = setTimeout(() => setJustAdded(false), 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [justAdded]);
 
   const handleIncrement = () => {
     hapticFeedback('light');
@@ -60,10 +69,10 @@ export default function ProductCard({ product }) {
           
           {quantity === 0 ? (
             <button 
-              className="add-to-cart-btn"
+              className={`add-to-cart-btn ${justAdded ? 'just-added' : ''}`}
               onClick={handleAddToCart}
             >
-              В корзину
+              {justAdded ? '✓ Добавлено!' : 'В корзину'}
             </button>
           ) : (
             <div className="quantity-controls">
