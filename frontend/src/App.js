@@ -21,6 +21,28 @@ function App() {
   const cartItemsCount = getCartItemsCount();
   const cartTotal = getCartTotal();
 
+  const loadProducts = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await productsApi.getAll();
+      setProducts(data);
+    } catch (err) {
+      console.error('Error loading products:', err);
+      setError('Не удалось загрузить товары. Проверьте подключение к интернету.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filterProducts = useCallback(() => {
+    if (selectedCategory) {
+      setFilteredProducts(products.filter(product => product.category === selectedCategory));
+    } else {
+      setFilteredProducts(products);
+    }
+  }, [products, selectedCategory]);
+
   useEffect(() => {
     loadProducts();
   }, []);
@@ -46,28 +68,6 @@ function App() {
       hideMainButton();
     };
   }, [cartItemsCount, cartTotal, showMainButton, hideMainButton, hapticFeedback]);
-
-  const loadProducts = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await productsApi.getAll();
-      setProducts(data);
-    } catch (err) {
-      console.error('Error loading products:', err);
-      setError('Не удалось загрузить товары. Проверьте подключение к интернету.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const filterProducts = useCallback(() => {
-    if (selectedCategory) {
-      setFilteredProducts(products.filter(product => product.category === selectedCategory));
-    } else {
-      setFilteredProducts(products);
-    }
-  }, [products, selectedCategory]);
 
   const handleCategoryChange = (category) => {
     hapticFeedback('light');

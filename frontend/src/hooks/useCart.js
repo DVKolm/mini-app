@@ -6,16 +6,6 @@ export function useCart() {
   const [cart, setCart] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    loadCartFromStorage();
-  }, []);
-
-  useEffect(() => {
-    if (!isLoading) {
-      saveCartToStorage();
-    }
-  }, [cart, isLoading, saveCartToStorage]);
-
   const loadCartFromStorage = () => {
     try {
       const savedCart = localStorage.getItem(CART_STORAGE_KEY);
@@ -36,6 +26,16 @@ export function useCart() {
       console.error('Error saving cart to storage:', error);
     }
   }, [cart]);
+
+  useEffect(() => {
+    loadCartFromStorage();
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading) {
+      saveCartToStorage();
+    }
+  }, [cart, isLoading, saveCartToStorage]);
 
   const addToCart = (product, quantity = 1) => {
     setCart(currentCart => {
