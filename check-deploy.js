@@ -13,8 +13,8 @@ console.log('📁 Проверка структуры файлов:');
 // Список обязательных файлов
 const requiredFiles = [
   'frontend/package.json',
-  'frontend/index.html',
-  'frontend/manifest.json',
+  'frontend/public/index.html',
+  'frontend/public/manifest.json',
   'frontend/src/App.js',
   'frontend/src/index.js',
   'netlify.toml'
@@ -45,7 +45,7 @@ try {
 
 console.log('\n🔧 Проверка index.html:');
 try {
-  const indexPath = path.join(index.html'));
+  const indexPath = path.join(frontendPath, 'public', 'index.html');
   const indexContent = fs.readFileSync(indexPath, 'utf8');
   
   if (indexContent.includes('<div id="root">')) {
