@@ -16,10 +16,7 @@ function App() {
   const [isCartVisible, setIsCartVisible] = useState(false);
 
   const { user, showMainButton, hideMainButton, hapticFeedback, themeParams } = useTelegram();
-  const { getCartItemsCount, getCartTotal } = useCart();
-
-  const cartItemsCount = getCartItemsCount();
-  const cartTotal = getCartTotal();
+  const { cartItemsCount, cartTotal } = useCart();
 
   const loadProducts = async () => {
     try {

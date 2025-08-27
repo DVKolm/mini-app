@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 
 const CART_STORAGE_KEY = 'farmShopCart';
 
@@ -76,13 +76,18 @@ export function useCart() {
     setCart([]);
   };
 
-  const getCartTotal = () => {
+  // Мемоизированные значения для реактивности
+  const cartTotal = useMemo(() => {
     return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
-  };
+  }, [cart]);
 
-  const getCartItemsCount = () => {
+  const cartItemsCount = useMemo(() => {
     return cart.reduce((total, item) => total + item.quantity, 0);
-  };
+  }, [cart]);
+
+  // Оставляем функции для обратной совместимости
+  const getCartTotal = () => cartTotal;
+  const getCartItemsCount = () => cartItemsCount;
 
   const getItemQuantity = (productId) => {
     const item = cart.find(item => item.id === productId);
@@ -96,6 +101,8 @@ export function useCart() {
   return {
     cart,
     isLoading,
+    cartTotal,
+    cartItemsCount,
     addToCart,
     removeFromCart,
     updateQuantity,
