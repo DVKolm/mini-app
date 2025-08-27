@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTelegram } from './hooks/useTelegram';
-import { useCart } from './hooks/useCart';
+import { useCartContext } from './contexts/CartContext';
 import { productsApi } from './utils/api';
 import Categories from './components/Categories';
 import ProductCard from './components/ProductCard';
@@ -16,7 +16,7 @@ function App() {
   const [isCartVisible, setIsCartVisible] = useState(false);
 
   const { user, showMainButton, hideMainButton, hapticFeedback, themeParams } = useTelegram();
-  const { cartItemsCount, cartTotal, isLoading: isCartLoading } = useCart();
+  const { cartItemsCount, cartTotal, isLoading: isCartLoading } = useCartContext();
 
   const loadProducts = async () => {
     try {

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useCart } from '../hooks/useCart';
+import { useCartContext } from '../contexts/CartContext';
 import { useTelegram } from '../hooks/useTelegram';
 import { ordersApi } from '../utils/api';
 import './Cart.css';
 
 export default function Cart({ isVisible, onClose }) {
-  const { cart, getCartTotal, updateQuantity, clearCart } = useCart();
+  const { cart, getCartTotal, updateQuantity, clearCart } = useCartContext();
   const { user, initData, hapticFeedback, showAlert, showConfirm } = useTelegram();
   
   const [deliveryAddress, setDeliveryAddress] = useState('');
@@ -66,13 +66,28 @@ export default function Cart({ isVisible, onClose }) {
   };
 
   const handleClearCart = () => {
-    showConfirm('Очистить корзину?', (confirmed) => {
+    try {
+      showConfirm('Очистить корзину?', (confirmed) => {
+        try {
+          if (confirmed) {
+            hapticFeedback('impact_heavy');
+            clearCart();
+            console.log('[Cart] Cart cleared');
+          }
+        } catch (error) {
+          console.error('[Cart] Error in confirm callback:', error);
+        }
+      });
+    } catch (error) {
+      console.error('[Cart] Error showing confirm:', error);
+      // Fallback to direct clear without confirmation
+      const confirmed = window.confirm('Очистить корзину?');
       if (confirmed) {
         hapticFeedback('impact_heavy');
         clearCart();
-        console.log('[Cart] Cart cleared');
+        console.log('[Cart] Cart cleared (fallback)');
       }
-    });
+    }
   };
 
   if (!isVisible) return null;

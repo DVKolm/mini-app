@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useCart } from '../hooks/useCart';
+import { useCartContext } from '../contexts/CartContext';
 import { useTelegram } from '../hooks/useTelegram';
 import './ProductCard.css';
 
 export default function ProductCard({ product }) {
-  const { addToCart, getItemQuantity, updateQuantity } = useCart();
+  const { addToCart, getItemQuantity, updateQuantity } = useCartContext();
   const { hapticFeedback } = useTelegram();
   const [justAdded, setJustAdded] = useState(false);
   

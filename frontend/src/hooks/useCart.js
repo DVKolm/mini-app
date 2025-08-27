@@ -9,8 +9,11 @@ export function useCart() {
   const loadCartFromStorage = () => {
     try {
       const savedCart = localStorage.getItem(CART_STORAGE_KEY);
+      console.log('[CART DEBUG] Loading from storage:', savedCart);
       if (savedCart) {
-        setCart(JSON.parse(savedCart));
+        const parsedCart = JSON.parse(savedCart);
+        console.log('[CART DEBUG] Parsed cart:', parsedCart);
+        setCart(parsedCart);
       }
     } catch (error) {
       console.error('Error loading cart from storage:', error);
@@ -35,8 +38,10 @@ export function useCart() {
     }
   }, [cart, isLoading]);
 
-  const addToCart = (product, quantity = 1) => {
+  const addToCart = useCallback((product, quantity = 1) => {
+    console.log('[CART DEBUG] Adding to cart:', { product, quantity });
     setCart(currentCart => {
+      console.log('[CART DEBUG] Current cart before add:', currentCart);
       const existingItem = currentCart.find(item => item.id === product.id);
       
       let newCart;
@@ -46,15 +51,15 @@ export function useCart() {
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
-        console.log('[addToCart] Updated existing item:', newCart);
+        console.log('[CART DEBUG] Updated existing item:', newCart);
       } else {
         newCart = [...currentCart, { ...product, quantity }];
-        console.log('[addToCart] Added new item:', newCart);
+        console.log('[CART DEBUG] Added new item:', newCart);
       }
       
       return newCart;
     });
-  };
+  }, []);
 
   const removeFromCart = (productId) => {
     setCart(currentCart => {
