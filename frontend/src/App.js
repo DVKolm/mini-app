@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useTelegram } from './hooks/useTelegram';
 import { useCart } from './hooks/useCart';
 import { productsApi } from './utils/api';
@@ -16,7 +16,7 @@ function App() {
   const [isCartVisible, setIsCartVisible] = useState(false);
 
   const { user, showMainButton, hideMainButton, hapticFeedback, themeParams } = useTelegram();
-  const { cart, getCartItemsCount, getCartTotal } = useCart();
+  const { getCartItemsCount, getCartTotal } = useCart();
 
   const cartItemsCount = getCartItemsCount();
   const cartTotal = getCartTotal();
@@ -27,7 +27,7 @@ function App() {
 
   useEffect(() => {
     filterProducts();
-  }, [products, selectedCategory]);
+  }, [filterProducts]);
 
   useEffect(() => {
     if (cartItemsCount > 0) {
@@ -61,13 +61,13 @@ function App() {
     }
   };
 
-  const filterProducts = () => {
+  const filterProducts = useCallback(() => {
     if (selectedCategory) {
       setFilteredProducts(products.filter(product => product.category === selectedCategory));
     } else {
       setFilteredProducts(products);
     }
-  };
+  }, [products, selectedCategory]);
 
   const handleCategoryChange = (category) => {
     hapticFeedback('light');

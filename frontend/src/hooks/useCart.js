@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 const CART_STORAGE_KEY = 'farmShopCart';
 
@@ -14,7 +14,7 @@ export function useCart() {
     if (!isLoading) {
       saveCartToStorage();
     }
-  }, [cart, isLoading]);
+  }, [cart, isLoading, saveCartToStorage]);
 
   const loadCartFromStorage = () => {
     try {
@@ -29,13 +29,13 @@ export function useCart() {
     }
   };
 
-  const saveCartToStorage = () => {
+  const saveCartToStorage = useCallback(() => {
     try {
       localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
     } catch (error) {
       console.error('Error saving cart to storage:', error);
     }
-  };
+  }, [cart]);
 
   const addToCart = (product, quantity = 1) => {
     setCart(currentCart => {
