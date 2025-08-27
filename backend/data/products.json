@@ -1,0 +1,206 @@
+[
+  {
+    "id": 1,
+    "name": "Сыр Российский классический",
+    "description": "Натуральный твёрдый сыр из свежего фермерского молока. Выдержанный по традиционной технологии.",
+    "price": 450,
+    "category": "Сыры",
+    "image": "https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=400&h=300&fit=crop&crop=center",
+    "unit": "кг",
+    "weight": "0.3-0.5 кг",
+    "inStock": true,
+    "nutritionalInfo": {
+      "protein": 25,
+      "fat": 30,
+      "carbs": 0,
+      "calories": 360
+    }
+  },
+  {
+    "id": 2,
+    "name": "Сыр Голландский фермерский",
+    "description": "Полутвёрдый сыр с нежным ореховым вкусом. Изготовлен из молока коров свободного выпаса.",
+    "price": 520,
+    "category": "Сыры",
+    "image": "https://images.unsplash.com/photo-1452195100486-9cc805987862?w=400&h=300&fit=crop&crop=center",
+    "unit": "кг",
+    "weight": "0.4-0.6 кг",
+    "inStock": true,
+    "nutritionalInfo": {
+      "protein": 27,
+      "fat": 28,
+      "carbs": 2,
+      "calories": 350
+    }
+  },
+  {
+    "id": 3,
+    "name": "Творожный сыр с зеленью",
+    "description": "Мягкий творожный сыр с добавлением свежей зелени укропа и петрушки.",
+    "price": 280,
+    "category": "Сыры",
+    "image": "https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=400&h=300&fit=crop&crop=center",
+    "unit": "г",
+    "weight": "200 г",
+    "inStock": true,
+    "nutritionalInfo": {
+      "protein": 18,
+      "fat": 20,
+      "carbs": 3,
+      "calories": 260
+    }
+  },
+  {
+    "id": 4,
+    "name": "Молоко цельное фермерское",
+    "description": "Свежее цельное молоко от коров, пасущихся на экологически чистых лугах.",
+    "price": 80,
+    "category": "Молоко",
+    "image": "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400&h=300&fit=crop&crop=center",
+    "unit": "л",
+    "weight": "1 л",
+    "inStock": true,
+    "nutritionalInfo": {
+      "protein": 3,
+      "fat": 3.5,
+      "carbs": 5,
+      "calories": 64
+    }
+  },
+  {
+    "id": 5,
+    "name": "Молоко обезжиренное",
+    "description": "Обезжиренное молоко, сохранившее все полезные свойства и натуральный вкус.",
+    "price": 70,
+    "category": "Молоко",
+    "image": "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&h=300&fit=crop&crop=center",
+    "unit": "л",
+    "weight": "1 л",
+    "inStock": true,
+    "nutritionalInfo": {
+      "protein": 3,
+      "fat": 0.1,
+      "carbs": 5,
+      "calories": 35
+    }
+  },
+  {
+    "id": 6,
+    "name": "Молоко топлёное",
+    "description": "Традиционное топлёное молоко с карамельным вкусом и ароматом.",
+    "price": 90,
+    "category": "Молоко",
+    "image": "https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=400&h=300&fit=crop&crop=center",
+    "unit": "л",
+    "weight": "1 л",
+    "inStock": true,
+    "nutritionalInfo": {
+      "protein": 3,
+      "fat": 4,
+      "carbs": 5.5,
+      "calories": 67
+    }
+  },
+  {
+    "id": 7,
+    "name": "Творог классический 9%",
+    "description": "Домашний творог традиционной жирности с нежной текстурой и натуральным вкусом.",
+    "price": 180,
+    "category": "Творог",
+    "image": "https://images.unsplash.com/photo-1628088062854-d1870b4553da?w=400&h=300&fit=crop&crop=center",
+    "unit": "г",
+    "weight": "500 г",
+    "inStock": true,
+    "nutritionalInfo": {
+      "protein": 16,
+      "fat": 9,
+      "carbs": 2,
+      "calories": 156
+    }
+  },
+  {
+    "id": 8,
+    "name": "Творог зернёный со сливками",
+    "description": "Нежный зернистый творог со сливками. Идеален для завтрака и полдника.",
+    "price": 220,
+    "category": "Творог",
+    "image": "https://images.unsplash.com/photo-1628088062854-d1870b4553da?w=400&h=300&fit=crop&crop=center",
+    "unit": "г",
+    "weight": "400 г",
+    "inStock": true,
+    "nutritionalInfo": {
+      "protein": 15,
+      "fat": 12,
+      "carbs": 3,
+      "calories": 180
+    }
+  },
+  {
+    "id": 9,
+    "name": "Творожная масса с изюмом",
+    "description": "Сладкая творожная масса с натуральным изюмом. Готовый десерт для всей семьи.",
+    "price": 160,
+    "category": "Творог",
+    "image": "https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=400&h=300&fit=crop&crop=center",
+    "unit": "г",
+    "weight": "300 г",
+    "inStock": true,
+    "nutritionalInfo": {
+      "protein": 12,
+      "fat": 15,
+      "carbs": 18,
+      "calories": 250
+    }
+  },
+  {
+    "id": 10,
+    "name": "Кефир 2.5%",
+    "description": "Полезный кефир на живых заквасках. Способствует пищеварению и укрепляет иммунитет.",
+    "price": 65,
+    "category": "Напитки",
+    "image": "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400&h=300&fit=crop&crop=center",
+    "unit": "л",
+    "weight": "1 л",
+    "inStock": true,
+    "nutritionalInfo": {
+      "protein": 3,
+      "fat": 2.5,
+      "carbs": 4,
+      "calories": 50
+    }
+  },
+  {
+    "id": 11,
+    "name": "Ряженка 4%",
+    "description": "Густая ряженка из топлёного молока с мягким сливочным вкусом.",
+    "price": 75,
+    "category": "Напитки",
+    "image": "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&h=300&fit=crop&crop=center",
+    "unit": "л",
+    "weight": "1 л",
+    "inStock": true,
+    "nutritionalInfo": {
+      "protein": 3,
+      "fat": 4,
+      "carbs": 4.2,
+      "calories": 58
+    }
+  },
+  {
+    "id": 12,
+    "name": "Простокваша домашняя",
+    "description": "Натуральная простокваша на молочнокислых бактериях. Полезно для здоровья.",
+    "price": 60,
+    "category": "Напитки",
+    "image": "https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=400&h=300&fit=crop&crop=center",
+    "unit": "л",
+    "weight": "1 л",
+    "inStock": true,
+    "nutritionalInfo": {
+      "protein": 3,
+      "fat": 2.5,
+      "carbs": 4,
+      "calories": 48
+    }
+  }
+]
