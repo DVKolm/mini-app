@@ -19,19 +19,9 @@ export function useCart() {
     }
   };
 
-  const saveCartToStorage = useCallback(() => {
-    try {
-      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
-    } catch (error) {
-      console.error('Error saving cart to storage:', error);
-    }
-  }, [cart]);
-
   useEffect(() => {
     loadCartFromStorage();
   }, []);
-
-  // Убираем автоматическое сохранение, так как теперь сохраняем принудительно в каждой операции
 
   const addToCart = (product, quantity = 1) => {
     setCart(currentCart => {

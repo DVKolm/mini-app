@@ -49,15 +49,12 @@ export default function Cart({ isVisible, onClose }) {
       
       if (response.success) {
         hapticFeedback('notification_success');
-        setOrderSuccess(true);
         clearCart();
         showAlert(response.message || 'Заказ успешно оформлен!');
         
-        setTimeout(() => {
-          onClose();
-          setOrderSuccess(false);
-          setDeliveryAddress('');
-        }, 2000);
+        // Сразу закрываем корзину после успешного заказа
+        setDeliveryAddress('');
+        onClose();
       }
     } catch (error) {
       console.error('Order creation error:', error);
@@ -78,20 +75,6 @@ export default function Cart({ isVisible, onClose }) {
   };
 
   if (!isVisible) return null;
-
-  if (orderSuccess) {
-    return (
-      <div className="cart-overlay">
-        <div className="cart-modal">
-          <div className="order-success">
-            <div className="success-icon">✅</div>
-            <h2>Заказ оформлен!</h2>
-            <p>Мы свяжемся с вами для подтверждения</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="cart-overlay">
