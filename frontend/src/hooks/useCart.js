@@ -31,7 +31,7 @@ export function useCart() {
     if (!isLoading) {
       try {
         localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
-        console.log('[useCart] Auto-sync to localStorage:', cart);
+        console.log('[CART DEBUG] Auto-sync to localStorage:', cart.length, 'items');
       } catch (error) {
         console.error('Error auto-syncing cart to storage:', error);
       }
@@ -86,7 +86,15 @@ export function useCart() {
   };
 
   const clearCart = () => {
+    console.log('[CART DEBUG] Clearing cart...');
     setCart([]);
+    // Принудительно очищаем localStorage
+    try {
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify([]));
+      console.log('[CART DEBUG] localStorage cleared');
+    } catch (error) {
+      console.error('[CART DEBUG] Error clearing localStorage:', error);
+    }
   };
 
   // Мемоизированные значения для реактивности

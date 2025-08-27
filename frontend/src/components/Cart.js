@@ -49,12 +49,15 @@ export default function Cart({ isVisible, onClose }) {
       
       if (response.success) {
         hapticFeedback('notification_success');
-        clearCart();
-        showAlert(response.message || 'Заказ успешно оформлен!');
+        setOrderSuccess(true);
         
-        // Сразу закрываем корзину после успешного заказа
-        setDeliveryAddress('');
-        onClose();
+        // Показываем успех 2 секунды, затем закрываем
+        setTimeout(() => {
+          clearCart();
+          setDeliveryAddress('');
+          setOrderSuccess(false);
+          onClose();
+        }, 2000);
       }
     } catch (error) {
       console.error('Order creation error:', error);
@@ -66,28 +69,9 @@ export default function Cart({ isVisible, onClose }) {
   };
 
   const handleClearCart = () => {
-    try {
-      showConfirm('Очистить корзину?', (confirmed) => {
-        try {
-          if (confirmed) {
-            hapticFeedback('impact_heavy');
-            clearCart();
-            console.log('[Cart] Cart cleared');
-          }
-        } catch (error) {
-          console.error('[Cart] Error in confirm callback:', error);
-        }
-      });
-    } catch (error) {
-      console.error('[Cart] Error showing confirm:', error);
-      // Fallback to direct clear without confirmation
-      const confirmed = window.confirm('Очистить корзину?');
-      if (confirmed) {
-        hapticFeedback('impact_heavy');
-        clearCart();
-        console.log('[Cart] Cart cleared (fallback)');
-      }
-    }
+    hapticFeedback('impact_heavy');
+    clearCart();
+    console.log('[Cart] Cart cleared');
   };
 
   if (!isVisible) return null;
@@ -103,7 +87,13 @@ export default function Cart({ isVisible, onClose }) {
         </div>
 
         <div className="cart-content">
-          {cart.length === 0 ? (
+          {orderSuccess ? (
+            <div className="order-success">
+              <div className="success-icon">✅</div>
+              <h3>Заказ успешно оформлен!</h3>
+              <p>Спасибо за покупку. Мы свяжемся с вами для уточнения деталей доставки.</p>
+            </div>
+          ) : cart.length === 0 ? (
             <div className="empty-cart">
               <div className="empty-cart-icon">🛒</div>
               <p>Корзина пуста</p>
@@ -185,7 +175,7 @@ export default function Cart({ isVisible, onClose }) {
           )}
         </div>
 
-        {cart.length > 0 && (
+        {cart.length > 0 && !orderSuccess && (
           <div className="cart-footer">
             <button 
               className="clear-cart-btn"
