@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "id": "meu7c9efv6izk1d4x",
+    "userId": 781182099,
+    "userName": "Тестовый Пользователь",
+    "items": [
+      {
+        "id": 1,
+        "name": "��� ����������",
+        "price": 450,
+        "quantity": 1,
+        "subtotal": 450
+      }
+    ],
+    "totalAmount": 450,
+    "deliveryAddress": "�������� ����� ����� UI",
+    "status": "pending",
+    "createdAt": "2025-08-27T16:41:17.463Z",
+    "telegramData": {
+      "userId": 781182099,
+      "userName": "testuser",
+      "firstName": "Тестовый",
+      "lastName": "Пользователь"
+    }
+  }
+]

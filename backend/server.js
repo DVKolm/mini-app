@@ -3,11 +3,19 @@ const cors = require('cors');
 const crypto = require('crypto');
 require('dotenv').config();
 
+const FarmShopBot = require('./bot');
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+
+// Инициализация бота
+const bot = new FarmShopBot();
+
+// Делаем бота доступным для маршрутов
+app.locals.bot = bot;
 
 const productsRoutes = require('./routes/products');
 const ordersRoutes = require('./routes/orders');

@@ -31,7 +31,16 @@ function generateOrderId() {
   return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
 }
 
-router.post('/', validateTelegramData, async (req, res) => {
+// Условная валидация: только в production требуем Telegram данные
+const conditionalValidation = (req, res, next) => {
+  if (process.env.NODE_ENV === 'production') {
+    return validateTelegramData(req, res, next);
+  }
+  // В development пропускаем валидацию
+  next();
+};
+
+router.post('/', conditionalValidation, async (req, res) => {
   try {
     const { items, deliveryAddress, totalAmount, initData } = req.body;
     
@@ -44,7 +53,19 @@ router.post('/', validateTelegramData, async (req, res) => {
     }
     
     const telegramData = initData ? parseTelegramInitData(initData) : null;
-    const user = req.telegramUser || (telegramData && telegramData.user) || { id: 'unknown', first_name: 'Гость' };
+    
+    // В development режиме создаем тестового пользователя
+    let user = req.telegramUser || (telegramData && telegramData.user);
+    if (!user && process.env.NODE_ENV === 'development') {
+      user = { 
+        id: 781182099, 
+        first_name: 'Тестовый', 
+        last_name: 'Пользователь',
+        username: 'testuser'
+      };
+    } else if (!user) {
+      user = { id: 'unknown', first_name: 'Гость' };
+    }
     
     const order = {
       id: generateOrderId(),
@@ -73,9 +94,10 @@ router.post('/', validateTelegramData, async (req, res) => {
     orders.push(order);
     saveOrders(orders);
     
-    if (process.env.TELEGRAM_BOT_TOKEN) {
+    // Отправляем уведомление через бота
+    if (req.app.locals.bot) {
       try {
-        await sendOrderNotification(order);
+        await req.app.locals.bot.sendOrderNotification(order);
       } catch (error) {
         console.error('Failed to send Telegram notification:', error);
       }
@@ -152,5 +174,49 @@ ${itemsList}
     throw error;
   }
 }
+
+// Тестовый эндпоинт для проверки уведомлений (только для development)
+router.post('/test-notification', async (req, res) => {
+  if (process.env.NODE_ENV !== 'development') {
+    return res.status(403).json({ error: 'Only available in development' });
+  }
+
+  try {
+    const testOrder = {
+      id: 'TEST-' + Date.now(),
+      userId: 781182099,
+      userName: 'Тестовый Пользователь',
+      items: [
+        { id: 1, name: 'Сыр Российский', price: 450, quantity: 1, subtotal: 450 },
+        { id: 4, name: 'Молоко фермерское', price: 80, quantity: 2, subtotal: 160 }
+      ],
+      totalAmount: 610,
+      deliveryAddress: 'г. Москва, ул. Тестовая, д.1, кв.10',
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+      telegramData: {
+        userId: 781182099,
+        userName: 'testuser',
+        firstName: 'Тестовый',
+        lastName: 'Пользователь'
+      }
+    };
+
+    // Отправляем уведомление через бота
+    if (req.app.locals.bot) {
+      await req.app.locals.bot.sendOrderNotification(testOrder);
+      res.json({ 
+        success: true, 
+        message: 'Test notification sent successfully!',
+        orderId: testOrder.id 
+      });
+    } else {
+      res.status(500).json({ error: 'Bot not initialized' });
+    }
+  } catch (error) {
+    console.error('Test notification error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 module.exports = router;
