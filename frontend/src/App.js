@@ -49,7 +49,14 @@ function App() {
   }, [filterProducts]);
 
   useEffect(() => {
-    if (cartItemsCount > 0) {
+    console.log('[App] Cart state changed:', { cartItemsCount, cartTotal, isCartVisible });
+    
+    // Скрываем кнопку корзины если корзина открыта или пуста
+    if (isCartVisible || cartItemsCount === 0) {
+      console.log('[App] Hiding main button');
+      hideMainButton();
+    } else if (cartItemsCount > 0) {
+      console.log('[App] Showing main button');
       showMainButton(
         `Корзина (${cartItemsCount}) • ${cartTotal}₽`,
         () => {
@@ -57,14 +64,12 @@ function App() {
           setIsCartVisible(true);
         }
       );
-    } else {
-      hideMainButton();
     }
 
     return () => {
       hideMainButton();
     };
-  }, [cartItemsCount, cartTotal, showMainButton, hideMainButton, hapticFeedback]);
+  }, [cartItemsCount, cartTotal, isCartVisible, showMainButton, hideMainButton, hapticFeedback]);
 
   const handleCategoryChange = (category) => {
     hapticFeedback('light');

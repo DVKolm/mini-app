@@ -31,30 +31,47 @@ export function useCart() {
     loadCartFromStorage();
   }, []);
 
-  useEffect(() => {
-    if (!isLoading) {
-      saveCartToStorage();
-    }
-  }, [cart, isLoading, saveCartToStorage]);
+  // Убираем автоматическое сохранение, так как теперь сохраняем принудительно в каждой операции
 
   const addToCart = (product, quantity = 1) => {
     setCart(currentCart => {
       const existingItem = currentCart.find(item => item.id === product.id);
       
+      let newCart;
       if (existingItem) {
-        return currentCart.map(item =>
+        newCart = currentCart.map(item =>
           item.id === product.id
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       } else {
-        return [...currentCart, { ...product, quantity }];
+        newCart = [...currentCart, { ...product, quantity }];
       }
+      
+      // Принудительно сохраняем в localStorage
+      try {
+        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(newCart));
+      } catch (error) {
+        console.error('Error saving cart to storage:', error);
+      }
+      
+      return newCart;
     });
   };
 
   const removeFromCart = (productId) => {
-    setCart(currentCart => currentCart.filter(item => item.id !== productId));
+    setCart(currentCart => {
+      const newCart = currentCart.filter(item => item.id !== productId);
+      
+      // Принудительно сохраняем в localStorage
+      try {
+        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(newCart));
+      } catch (error) {
+        console.error('Error saving cart to storage:', error);
+      }
+      
+      return newCart;
+    });
   };
 
   const updateQuantity = (productId, quantity) => {
@@ -63,26 +80,45 @@ export function useCart() {
       return;
     }
 
-    setCart(currentCart =>
-      currentCart.map(item =>
+    setCart(currentCart => {
+      const newCart = currentCart.map(item =>
         item.id === productId
           ? { ...item, quantity }
           : item
-      )
-    );
+      );
+      
+      // Принудительно сохраняем в localStorage
+      try {
+        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(newCart));
+      } catch (error) {
+        console.error('Error saving cart to storage:', error);
+      }
+      
+      return newCart;
+    });
   };
 
   const clearCart = () => {
     setCart([]);
+    // Принудительно очищаем localStorage
+    try {
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify([]));
+    } catch (error) {
+      console.error('Error clearing cart storage:', error);
+    }
   };
 
   // Мемоизированные значения для реактивности
   const cartTotal = useMemo(() => {
-    return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+    const total = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+    console.log('[useCart] cartTotal updated:', total, 'cart:', cart);
+    return total;
   }, [cart]);
 
   const cartItemsCount = useMemo(() => {
-    return cart.reduce((total, item) => total + item.quantity, 0);
+    const count = cart.reduce((total, item) => total + item.quantity, 0);
+    console.log('[useCart] cartItemsCount updated:', count, 'cart:', cart);
+    return count;
   }, [cart]);
 
   // Оставляем функции для обратной совместимости
